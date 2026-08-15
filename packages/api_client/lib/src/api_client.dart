@@ -4,16 +4,11 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:turf_booking_core/turf_booking_core.dart';
 
+import 'api_error.dart';
 import 'interceptors.dart';
 
 /// HTTP methods supported by the shared API transport.
-enum ApiHttpMethod {
-  get,
-  post,
-  put,
-  patch,
-  delete,
-}
+enum ApiHttpMethod { get, post, put, patch, delete }
 
 /// An immutable request relative to the configured versioned API base URL.
 class ApiRequest {
@@ -23,9 +18,9 @@ class ApiRequest {
     Map<String, String> headers = const {},
     Map<String, String> queryParameters = const {},
     List<int>? bodyBytes,
-  })  : headers = Map.unmodifiable(headers),
-        queryParameters = Map.unmodifiable(queryParameters),
-        bodyBytes = bodyBytes == null ? null : Uint8List.fromList(bodyBytes) {
+  }) : headers = Map.unmodifiable(headers),
+       queryParameters = Map.unmodifiable(queryParameters),
+       bodyBytes = bodyBytes == null ? null : Uint8List.fromList(bodyBytes) {
     _validatePath(path);
   }
 
@@ -70,8 +65,8 @@ class ApiResponse {
     required this.statusCode,
     required Map<String, String> headers,
     required List<int> bodyBytes,
-  })  : headers = Map.unmodifiable(headers),
-        bodyBytes = Uint8List.fromList(bodyBytes);
+  }) : headers = Map.unmodifiable(headers),
+       bodyBytes = Uint8List.fromList(bodyBytes);
 
   final int statusCode;
   final Map<String, String> headers;
@@ -111,11 +106,11 @@ class ApiClient {
     http.Client? httpClient,
     List<ApiInterceptor>? interceptors,
     this.requestTimeout = const Duration(seconds: 15),
-  })  : _baseUrl = configuration.baseUrl,
-        _httpClient = httpClient ?? http.Client(),
-        _interceptors = List.unmodifiable(
-          interceptors ?? [RequestIDInterceptor()],
-        );
+  }) : _baseUrl = configuration.baseUrl,
+       _httpClient = httpClient ?? http.Client(),
+       _interceptors = List.unmodifiable(
+         interceptors ?? [RequestIDInterceptor()],
+       );
 
   final Uri _baseUrl;
   final http.Client _httpClient;
@@ -150,6 +145,10 @@ class ApiClient {
         response = await interceptor.onResponse(interceptedRequest, response);
       }
 
+      if (!response.isSuccess) {
+        throw ApiResponseException.fromResponse(response);
+      }
+
       return response;
     } on ApiTransportException catch (exception) {
       var interceptedException = exception;
@@ -168,8 +167,7 @@ class ApiClient {
     final request = http.Request(
       apiRequest.method.name.toUpperCase(),
       _resolveUri(apiRequest),
-    )
-      ..headers.addAll(apiRequest.headers);
+    )..headers.addAll(apiRequest.headers);
 
     if (apiRequest.bodyBytes != null) {
       request.bodyBytes = apiRequest.bodyBytes!;
