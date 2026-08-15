@@ -119,3 +119,10 @@ Riverpod `ProviderScope` is also each app's explicit composition root for
 configuration and infrastructure. See
 [`../docs/development/flutter-dependency-injection.md`](../docs/development/flutter-dependency-injection.md)
 for lifetime, test override, and app-isolation rules.
+
+## Design system
+
+All app shells consume the shared Material 3 theme and visual tokens from
+`turf_booking_design_system`. See
+[`../docs/development/flutter-design-system.md`](../docs/development/flutter-design-system.md)
+for token and accessibility ownership.
