@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_customer/app/foundation_screen.dart';
+import 'package:turf_booking_localization/turf_booking_localization.dart';
 
 abstract final class CustomerRoutePaths {
   static const home = '/';
@@ -34,10 +35,11 @@ class _UnknownCustomerRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pageNotFound =
+        TurfBookingLocalizations.of(context)?.pageNotFound ?? 'Page not found';
+
     return Scaffold(
-      body: Center(
-        child: Text('Customer route not found in ${environment.label}.'),
-      ),
+      body: Center(child: Text('$pageNotFound (${environment.label}).')),
     );
   }
 }

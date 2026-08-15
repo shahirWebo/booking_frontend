@@ -37,7 +37,7 @@ void main() {
     appRouter.router.go('/customer');
     await tester.pumpAndSettle();
 
-    expect(find.text('Vendor route not found in Staging.'), findsOneWidget);
+    expect(find.text('Page not found (Staging).'), findsOneWidget);
   });
 }
 

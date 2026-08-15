@@ -39,10 +39,7 @@ void main() {
     appRouter.router.go('/vendor');
     await tester.pumpAndSettle();
 
-    expect(
-      find.text('Customer route not found in Development.'),
-      findsOneWidget,
-    );
+    expect(find.text('Page not found (Development).'), findsOneWidget);
   });
 }
 
