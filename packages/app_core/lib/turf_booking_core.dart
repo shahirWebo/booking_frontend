@@ -1,6 +1,8 @@
 /// Framework-neutral primitives shared by Turf Booking applications.
 library;
 
+export 'src/observability.dart';
+
 /// The build-time environment selected by an application entry point.
 enum AppEnvironment {
   development('Development', 'Dev'),
@@ -32,10 +34,7 @@ enum AppEnvironment {
 /// Staging and production intentionally have no source-controlled fallback.
 /// Supply their endpoint with `--dart-define=API_BASE_URL=...`.
 class ApiConfiguration {
-  const ApiConfiguration._({
-    required this.environment,
-    required this.baseUrl,
-  });
+  const ApiConfiguration._({required this.environment, required this.baseUrl});
 
   /// Laravel's API versioned local-development endpoint.
   static final Uri localDevelopmentBaseUrl = Uri.parse(
@@ -51,8 +50,8 @@ class ApiConfiguration {
 
     return ApiConfiguration.fromBaseUrl(
       environment: environment,
-      baseUrl: configuredBaseUrl.isEmpty &&
-              environment == AppEnvironment.development
+      baseUrl:
+          configuredBaseUrl.isEmpty && environment == AppEnvironment.development
           ? localDevelopmentBaseUrl.toString()
           : configuredBaseUrl,
     );
