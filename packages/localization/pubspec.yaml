@@ -1,0 +1,12 @@
+name: turf_booking_localization
+description: Shared localization foundation for Turf Booking apps.
+publish_to: none
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter

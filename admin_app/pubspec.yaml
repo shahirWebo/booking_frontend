@@ -1,0 +1,29 @@
+name: turf_booking_admin
+description: Admin portal for the Turf Booking Platform.
+publish_to: none
+version: 1.0.0+1
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  turf_booking_api_client:
+    path: ../packages/api_client
+  turf_booking_core:
+    path: ../packages/app_core
+  turf_booking_design_system:
+    path: ../packages/design_system
+  turf_booking_localization:
+    path: ../packages/localization
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  turf_booking_test_support:
+    path: ../packages/test_support
+
+flutter:
+  uses-material-design: true

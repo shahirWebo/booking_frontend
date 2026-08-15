@@ -1,0 +1,12 @@
+name: turf_booking_api_client
+description: Shared API transport boundary for Turf Booking apps.
+publish_to: none
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  turf_booking_core:
+    path: ../app_core
