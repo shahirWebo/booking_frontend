@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 
 class AdminApp extends StatelessWidget {
-  const AdminApp({super.key, required this.environment});
+  const AdminApp({super.key, required this.configuration});
 
-  final AppEnvironment environment;
+  final ApiConfiguration configuration;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: environment.displayNameFor('Turf Booking Admin'),
-      home: _AdminFoundationScreen(environment: environment),
+      title: configuration.environment.displayNameFor('Turf Booking Admin'),
+      home: _AdminFoundationScreen(environment: configuration.environment),
     );
   }
 }
