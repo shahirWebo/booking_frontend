@@ -8,5 +8,9 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
+  http: ^1.2.2
   turf_booking_core:
     path: ../app_core
+
+dev_dependencies:
+  test: ^1.25.0

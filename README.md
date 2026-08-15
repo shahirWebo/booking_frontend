@@ -75,3 +75,12 @@ Development defaults to the documented local Laravel URL. Staging and
 production must receive `API_BASE_URL` with `--dart-define`; they never fall
 back to development. Do not place API URLs, credentials, or service
 configuration in source-controlled flavor files.
+
+## Shared API transport
+
+`turf_booking_api_client` provides the explicit shared HTTP transport for all
+three applications. It accepts only relative paths beneath the configured API
+base URL and leaves authentication, request IDs, retries, and JSON envelope
+decoding to their scheduled layers. See
+[`../docs/development/flutter-api-client.md`](../docs/development/flutter-api-client.md)
+for usage and ownership boundaries.
