@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 
 class VendorApp extends StatelessWidget {
-  const VendorApp({super.key, required this.environment});
+  const VendorApp({super.key, required this.configuration});
 
-  final AppEnvironment environment;
+  final ApiConfiguration configuration;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: environment.displayNameFor('Turf Booking Vendor'),
-      home: _VendorFoundationScreen(environment: environment),
+      title: configuration.environment.displayNameFor('Turf Booking Vendor'),
+      home: _VendorFoundationScreen(environment: configuration.environment),
     );
   }
 }

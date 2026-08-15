@@ -5,7 +5,12 @@ import 'package:turf_booking_vendor/app/app.dart';
 void main() {
   testWidgets('renders the vendor application shell', (tester) async {
     await tester.pumpWidget(
-      const VendorApp(environment: AppEnvironment.production),
+      VendorApp(
+        configuration: ApiConfiguration.fromBaseUrl(
+          environment: AppEnvironment.production,
+          baseUrl: 'https://api.example.invalid/api/v1',
+        ),
+      ),
     );
 
     expect(find.text('Turf Booking Vendor'), findsOneWidget);
@@ -14,7 +19,12 @@ void main() {
 
   testWidgets('renders the development display name', (tester) async {
     await tester.pumpWidget(
-      const VendorApp(environment: AppEnvironment.development),
+      VendorApp(
+        configuration: ApiConfiguration.fromBaseUrl(
+          environment: AppEnvironment.development,
+          baseUrl: 'http://localhost:8000/api/v1',
+        ),
+      ),
     );
 
     expect(find.text('Turf Booking Vendor Dev'), findsOneWidget);

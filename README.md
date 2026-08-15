@@ -40,7 +40,9 @@ The customer and vendor identifiers use the project GitHub namespace:
 - `io.github.shahirwebo.turfbooking.vendor`
 
 Environment suffixes, compile-time API configuration, and environment-specific
-display names are introduced by `FL-002` and `FL-003`.
+display names are configured by `FL-002` and `FL-003`. See
+[`../docs/development/flutter-environment-configuration.md`](../docs/development/flutter-environment-configuration.md)
+for the API endpoint contract and CI-safe build commands.
 
 ## Build environments
 
@@ -54,8 +56,10 @@ the native flavor:
 ```bash
 cd customer_app
 flutter run --flavor development --target lib/main_development.dart
-flutter build appbundle --flavor production --target lib/main_production.dart
-flutter build ios --flavor staging --target lib/main_staging.dart
+flutter build appbundle --flavor production --target lib/main_production.dart \
+  --dart-define=API_BASE_URL=https://api.example.invalid/api/v1
+flutter build ios --flavor staging --target lib/main_staging.dart \
+  --dart-define=API_BASE_URL=https://staging-api.example.invalid/api/v1
 ```
 
 The vendor commands follow the same pattern in `vendor_app/`. Build a web
@@ -63,8 +67,11 @@ environment by selecting its matching target, for example:
 
 ```bash
 cd admin_app
-flutter build web --target lib/main_production.dart
+flutter build web --target lib/main_production.dart \
+  --dart-define=API_BASE_URL=https://api.example.invalid/api/v1
 ```
 
-`FL-003` supplies the API base URL for each environment. Do not place API URLs,
-credentials, or service configuration in source-controlled flavor files.
+Development defaults to the documented local Laravel URL. Staging and
+production must receive `API_BASE_URL` with `--dart-define`; they never fall
+back to development. Do not place API URLs, credentials, or service
+configuration in source-controlled flavor files.
