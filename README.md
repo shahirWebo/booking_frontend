@@ -1,18 +1,43 @@
-# apps
+# Turf Booking Flutter workspace
 
-A new Flutter project.
+This Dart workspace contains three independently built Flutter applications and
+the local packages that hold shared foundations.
 
-## Getting Started
+| Application | Package | MVP platforms |
+| --- | --- | --- |
+| `customer_app/` | `turf_booking_customer` | Android, iOS |
+| `vendor_app/` | `turf_booking_vendor` | Android, iOS, web |
+| `admin_app/` | `turf_booking_admin` | Web |
 
-This project is a starting point for a Flutter application.
+Shared packages live under `packages/`. Applications may depend on those
+packages, but shared packages never depend on an application and applications
+never import from each other.
 
-A few resources to get you started if this is your first Flutter project:
+## Setup and checks
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Run workspace commands from this directory:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# booking_frontend
+```bash
+flutter pub get
+dart format --output=none --set-exit-if-changed \
+  customer_app/lib customer_app/test \
+  vendor_app/lib vendor_app/test \
+  admin_app/lib admin_app/test packages
+flutter analyze
+flutter test customer_app/test vendor_app/test admin_app/test
+```
+
+Run an application from its package directory. For example:
+
+```bash
+cd customer_app
+flutter run
+```
+
+The customer and vendor identifiers use the project GitHub namespace:
+
+- `io.github.shahirwebo.turfbooking.customer`
+- `io.github.shahirwebo.turfbooking.vendor`
+
+Environment suffixes, compile-time API configuration, and environment-specific
+display names are introduced by `FL-002` and `FL-003`.

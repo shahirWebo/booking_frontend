@@ -1,0 +1,8 @@
+name: turf_booking_core
+description: Framework-neutral primitives shared by Turf Booking apps.
+publish_to: none
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.13.0
