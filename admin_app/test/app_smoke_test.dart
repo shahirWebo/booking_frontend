@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_admin/app/app.dart';
 import 'package:turf_booking_admin/app/routing/admin_app_router.dart';
+import 'package:turf_booking_admin/app/state/app_environment.dart';
 
 void main() {
   testWidgets('renders the admin application shell', (tester) async {
-    await tester.pumpWidget(
-      AdminApp(
-        configuration: ApiConfiguration.fromBaseUrl(
-          environment: AppEnvironment.production,
-          baseUrl: 'https://api.example.invalid/api/v1',
-        ),
-      ),
+    final configuration = ApiConfiguration.fromBaseUrl(
+      environment: AppEnvironment.production,
+      baseUrl: 'https://api.example.invalid/api/v1',
     );
+    await tester.pumpWidget(_adminApp(configuration));
 
     expect(find.text('Turf Booking Admin'), findsOneWidget);
     expect(find.text('Admin portal foundation'), findsOneWidget);
   });
 
   testWidgets('renders the development display name', (tester) async {
-    await tester.pumpWidget(
-      AdminApp(
-        configuration: ApiConfiguration.fromBaseUrl(
-          environment: AppEnvironment.development,
-          baseUrl: 'http://localhost:8000/api/v1',
-        ),
-      ),
+    final configuration = ApiConfiguration.fromBaseUrl(
+      environment: AppEnvironment.development,
+      baseUrl: 'http://localhost:8000/api/v1',
     );
+    await tester.pumpWidget(_adminApp(configuration));
 
     expect(find.text('Turf Booking Admin Dev'), findsOneWidget);
     expect(find.text('Development'), findsOneWidget);
@@ -43,4 +39,13 @@ void main() {
 
     expect(find.text('Admin route not found in Production.'), findsOneWidget);
   });
+}
+
+Widget _adminApp(ApiConfiguration configuration) {
+  return ProviderScope(
+    overrides: [
+      adminAppEnvironmentProvider.overrideWithValue(configuration.environment),
+    ],
+    child: AdminApp(configuration: configuration),
+  );
 }

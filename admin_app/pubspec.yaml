@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_riverpod: ^3.4.2
   go_router: ^17.3.0
   turf_booking_api_client:
     path: ../packages/api_client
