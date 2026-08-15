@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  go_router: ^17.3.0
   turf_booking_api_client:
     path: ../packages/api_client
   turf_booking_auth_client:
