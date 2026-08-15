@@ -29,10 +29,32 @@ android {
         versionName = flutter.versionName
     }
 
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("development") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            manifestPlaceholders["appLabel"] = "Turf Booking Vendor Dev"
+        }
+
+        create("staging") {
+            dimension = "environment"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+            manifestPlaceholders["appLabel"] = "Turf Booking Vendor Staging"
+        }
+
+        create("production") {
+            dimension = "environment"
+            manifestPlaceholders["appLabel"] = "Turf Booking Vendor"
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Production signing is configured by DEP-019.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
