@@ -41,3 +41,30 @@ The customer and vendor identifiers use the project GitHub namespace:
 
 Environment suffixes, compile-time API configuration, and environment-specific
 display names are introduced by `FL-002` and `FL-003`.
+
+## Build environments
+
+Each app has `development`, `staging`, and `production` entry points. The
+environment is selected at build time; production uses a separate target and
+never falls back to the development target.
+
+For customer and vendor Android/iOS builds, pair the matching entry point with
+the native flavor:
+
+```bash
+cd customer_app
+flutter run --flavor development --target lib/main_development.dart
+flutter build appbundle --flavor production --target lib/main_production.dart
+flutter build ios --flavor staging --target lib/main_staging.dart
+```
+
+The vendor commands follow the same pattern in `vendor_app/`. Build a web
+environment by selecting its matching target, for example:
+
+```bash
+cd admin_app
+flutter build web --target lib/main_production.dart
+```
+
+`FL-003` supplies the API base URL for each environment. Do not place API URLs,
+credentials, or service configuration in source-controlled flavor files.
