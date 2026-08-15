@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_admin/app/app.dart';
+import 'package:turf_booking_admin/app/routing/admin_app_router.dart';
 
 void main() {
   testWidgets('renders the admin application shell', (tester) async {
@@ -29,5 +31,16 @@ void main() {
 
     expect(find.text('Turf Booking Admin Dev'), findsOneWidget);
     expect(find.text('Development'), findsOneWidget);
+  });
+
+  testWidgets('renders an app-owned unknown-route screen', (tester) async {
+    final appRouter = AdminAppRouter(environment: AppEnvironment.production);
+    addTearDown(appRouter.router.dispose);
+
+    await tester.pumpWidget(MaterialApp.router(routerConfig: appRouter.router));
+    appRouter.router.go('/customer');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Admin route not found in Production.'), findsOneWidget);
   });
 }

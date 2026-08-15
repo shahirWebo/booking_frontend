@@ -1,45 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
+import 'package:turf_booking_customer/app/routing/customer_app_router.dart';
 
 class CustomerApp extends StatelessWidget {
-  const CustomerApp({super.key, required this.configuration});
+  CustomerApp({super.key, required ApiConfiguration configuration})
+    : configuration = configuration,
+      _router = CustomerAppRouter(environment: configuration.environment);
 
   final ApiConfiguration configuration;
+  final CustomerAppRouter _router;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: configuration.environment.displayNameFor('Turf Booking'),
-      home: _CustomerFoundationScreen(environment: configuration.environment),
-    );
-  }
-}
-
-class _CustomerFoundationScreen extends StatelessWidget {
-  const _CustomerFoundationScreen({required this.environment});
-
-  final AppEnvironment environment;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.sports_soccer, size: 56),
-            const SizedBox(height: 16),
-            Text(environment.displayNameFor('Turf Booking')),
-            const SizedBox(height: 8),
-            const Text('Customer app foundation'),
-            if (!environment.isProduction) ...[
-              const SizedBox(height: 8),
-              Text(environment.label),
-            ],
-          ],
-        ),
-      ),
+      routerConfig: _router.router,
     );
   }
 }

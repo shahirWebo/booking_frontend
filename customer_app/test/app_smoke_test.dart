@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_customer/app/app.dart';
+import 'package:turf_booking_customer/app/routing/customer_app_router.dart';
 
 void main() {
   testWidgets('renders the customer application shell', (tester) async {
@@ -29,5 +31,21 @@ void main() {
 
     expect(find.text('Turf Booking Staging'), findsOneWidget);
     expect(find.text('Staging'), findsOneWidget);
+  });
+
+  testWidgets('renders an app-owned unknown-route screen', (tester) async {
+    final appRouter = CustomerAppRouter(
+      environment: AppEnvironment.development,
+    );
+    addTearDown(appRouter.router.dispose);
+
+    await tester.pumpWidget(MaterialApp.router(routerConfig: appRouter.router));
+    appRouter.router.go('/vendor');
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Customer route not found in Development.'),
+      findsOneWidget,
+    );
   });
 }

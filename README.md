@@ -91,3 +91,10 @@ Customer and vendor token storage is isolated by application audience and build
 environment through `turf_booking_auth_client`. See
 [`../docs/development/flutter-secure-storage.md`](../docs/development/flutter-secure-storage.md)
 for platform safeguards and the future authentication ownership boundaries.
+
+## Routing
+
+Each app has an independent `GoRouter` table in `lib/app/routing/`; shared
+packages never own product routes. See
+[`../docs/development/flutter-routing.md`](../docs/development/flutter-routing.md)
+for route ownership, deep-link, and authorization boundaries.
