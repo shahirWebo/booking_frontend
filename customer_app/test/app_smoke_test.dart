@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_customer/app/app.dart';
+import 'package:turf_booking_customer/app/dependencies/app_dependencies.dart';
 import 'package:turf_booking_customer/app/routing/customer_app_router.dart';
-import 'package:turf_booking_customer/app/state/app_environment.dart';
 
 void main() {
   testWidgets('renders the customer application shell', (tester) async {
@@ -49,9 +49,7 @@ void main() {
 Widget _customerApp(ApiConfiguration configuration) {
   return ProviderScope(
     overrides: [
-      customerAppEnvironmentProvider.overrideWithValue(
-        configuration.environment,
-      ),
+      customerApiConfigurationProvider.overrideWithValue(configuration),
     ],
     child: CustomerApp(configuration: configuration),
   );
