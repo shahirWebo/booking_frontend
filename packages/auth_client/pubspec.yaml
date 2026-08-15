@@ -8,5 +8,10 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
+  flutter_secure_storage: ^9.2.4
   turf_booking_core:
     path: ../app_core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

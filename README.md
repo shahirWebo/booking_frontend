@@ -84,3 +84,10 @@ base URL and leaves authentication, request IDs, retries, and JSON envelope
 decoding to their scheduled layers. See
 [`../docs/development/flutter-api-client.md`](../docs/development/flutter-api-client.md)
 for usage and ownership boundaries.
+
+## Secure session storage
+
+Customer and vendor token storage is isolated by application audience and build
+environment through `turf_booking_auth_client`. See
+[`../docs/development/flutter-secure-storage.md`](../docs/development/flutter-secure-storage.md)
+for platform safeguards and the future authentication ownership boundaries.
