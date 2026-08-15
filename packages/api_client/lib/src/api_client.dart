@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:turf_booking_core/turf_booking_core.dart';
 
+import 'interceptors.dart';
+
 /// HTTP methods supported by the shared API transport.
 enum ApiHttpMethod {
   get,
@@ -32,6 +34,17 @@ class ApiRequest {
   final Map<String, String> headers;
   final Map<String, String> queryParameters;
   final Uint8List? bodyBytes;
+
+  /// Returns a request with replacement headers while preserving its payload.
+  ApiRequest copyWith({Map<String, String>? headers}) {
+    return ApiRequest(
+      method: method,
+      path: path,
+      headers: headers ?? this.headers,
+      queryParameters: queryParameters,
+      bodyBytes: bodyBytes,
+    );
+  }
 
   static void _validatePath(String value) {
     final uri = Uri.tryParse(value);
@@ -65,6 +78,17 @@ class ApiResponse {
   final Uint8List bodyBytes;
 
   bool get isSuccess => statusCode >= 200 && statusCode < 300;
+
+  /// The server-accepted correlation identifier, if it was returned.
+  String? get requestID {
+    for (final header in headers.entries) {
+      if (header.key.toLowerCase() == 'x-request-id') {
+        return header.value;
+      }
+    }
+
+    return null;
+  }
 }
 
 /// A safe transport failure that contains no request body or credential data.
@@ -85,12 +109,17 @@ class ApiClient {
   ApiClient({
     required ApiConfiguration configuration,
     http.Client? httpClient,
+    List<ApiInterceptor>? interceptors,
     this.requestTimeout = const Duration(seconds: 15),
   })  : _baseUrl = configuration.baseUrl,
-        _httpClient = httpClient ?? http.Client();
+        _httpClient = httpClient ?? http.Client(),
+        _interceptors = List.unmodifiable(
+          interceptors ?? [RequestIDInterceptor()],
+        );
 
   final Uri _baseUrl;
   final http.Client _httpClient;
+  final List<ApiInterceptor> _interceptors;
   final Duration requestTimeout;
 
   Future<ApiResponse> get(
@@ -109,6 +138,33 @@ class ApiClient {
   }
 
   Future<ApiResponse> send(ApiRequest apiRequest) async {
+    var interceptedRequest = apiRequest;
+
+    try {
+      for (final interceptor in _interceptors) {
+        interceptedRequest = await interceptor.onRequest(interceptedRequest);
+      }
+
+      var response = await _send(interceptedRequest);
+      for (final interceptor in _interceptors.reversed) {
+        response = await interceptor.onResponse(interceptedRequest, response);
+      }
+
+      return response;
+    } on ApiTransportException catch (exception) {
+      var interceptedException = exception;
+      for (final interceptor in _interceptors.reversed) {
+        interceptedException = await interceptor.onError(
+          interceptedRequest,
+          interceptedException,
+        );
+      }
+
+      throw interceptedException;
+    }
+  }
+
+  Future<ApiResponse> _send(ApiRequest apiRequest) async {
     final request = http.Request(
       apiRequest.method.name.toUpperCase(),
       _resolveUri(apiRequest),
