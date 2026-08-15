@@ -12,10 +12,8 @@ abstract class ApiInterceptor {
 
   FutureOr<ApiRequest> onRequest(ApiRequest request) => request;
 
-  FutureOr<ApiResponse> onResponse(
-    ApiRequest request,
-    ApiResponse response,
-  ) => response;
+  FutureOr<ApiResponse> onResponse(ApiRequest request, ApiResponse response) =>
+      response;
 
   FutureOr<ApiTransportException> onError(
     ApiRequest request,
@@ -25,7 +23,8 @@ abstract class ApiInterceptor {
 
 /// Creates an API-compatible uppercase ULID for request correlation.
 class ULIDRequestIDGenerator {
-  ULIDRequestIDGenerator({Random? random}) : _random = random ?? Random.secure();
+  ULIDRequestIDGenerator({Random? random})
+    : _random = random ?? Random.secure();
 
   static const _alphabet = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
 
@@ -67,10 +66,7 @@ class RequestIDInterceptor extends ApiInterceptor {
     }
 
     return request.copyWith(
-      headers: {
-        ...request.headers,
-        'X-Request-ID': _requestIDGenerator(),
-      },
+      headers: {...request.headers, 'X-Request-ID': _requestIDGenerator()},
     );
   }
 }
