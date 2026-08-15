@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_admin/app/app.dart';
+import 'package:turf_booking_admin/app/dependencies/app_dependencies.dart';
 import 'package:turf_booking_admin/app/routing/admin_app_router.dart';
-import 'package:turf_booking_admin/app/state/app_environment.dart';
 
 void main() {
   testWidgets('renders the admin application shell', (tester) async {
@@ -43,9 +43,7 @@ void main() {
 
 Widget _adminApp(ApiConfiguration configuration) {
   return ProviderScope(
-    overrides: [
-      adminAppEnvironmentProvider.overrideWithValue(configuration.environment),
-    ],
+    overrides: [adminApiConfigurationProvider.overrideWithValue(configuration)],
     child: AdminApp(configuration: configuration),
   );
 }

@@ -105,3 +105,10 @@ Each application bootstraps its own Riverpod `ProviderScope` and owns provider
 definitions locally. See
 [`../docs/development/flutter-state-management.md`](../docs/development/flutter-state-management.md)
 for feature ownership and test-override rules.
+
+## Dependency injection
+
+Riverpod `ProviderScope` is also each app's explicit composition root for
+configuration and infrastructure. See
+[`../docs/development/flutter-dependency-injection.md`](../docs/development/flutter-dependency-injection.md)
+for lifetime, test override, and app-isolation rules.
