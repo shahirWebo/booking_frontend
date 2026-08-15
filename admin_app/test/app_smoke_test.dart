@@ -37,7 +37,7 @@ void main() {
     appRouter.router.go('/customer');
     await tester.pumpAndSettle();
 
-    expect(find.text('Admin route not found in Production.'), findsOneWidget);
+    expect(find.text('Page not found (Production).'), findsOneWidget);
   });
 }
 

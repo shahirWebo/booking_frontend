@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 /// Shared color tokens. Product features should use theme colors for UI.
 abstract final class TurfBookingColors {
   static const brand = Color(0xFF1B6B45);
-  static const brandDark = Color(0xFF0B4028);
-  static const brandLight = Color(0xFF87D8A9);
 }
 
 /// Shared layout-spacing tokens in logical pixels.
@@ -42,12 +40,6 @@ abstract final class TurfBookingTheme {
       brightness: brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
-      appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surface,
-        foregroundColor: colorScheme.onSurface,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-      ),
       cardTheme: CardThemeData(
         elevation: 0,
         color: colorScheme.surfaceContainerLow,

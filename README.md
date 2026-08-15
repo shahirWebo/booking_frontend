@@ -76,6 +76,13 @@ production must receive `API_BASE_URL` with `--dart-define`; they never fall
 back to development. Do not place API URLs, credentials, or service
 configuration in source-controlled flavor files.
 
+## Localization
+
+The shared localization package supplies generated delegates and supported
+locales for every app. See
+[`../docs/development/flutter-localization.md`](../docs/development/flutter-localization.md)
+for ARB generation and message-ownership rules.
+
 ## Shared API transport
 
 `turf_booking_api_client` provides the explicit shared HTTP transport for all
