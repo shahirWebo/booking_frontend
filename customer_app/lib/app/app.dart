@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_customer/app/routing/customer_app_router.dart';
+import 'package:turf_booking_customer/app/state/app_environment.dart';
 
-class CustomerApp extends StatelessWidget {
+class CustomerApp extends ConsumerWidget {
   CustomerApp({super.key, required ApiConfiguration configuration})
     : configuration = configuration,
       _router = CustomerAppRouter(environment: configuration.environment);
@@ -11,10 +13,12 @@ class CustomerApp extends StatelessWidget {
   final CustomerAppRouter _router;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final environment = ref.watch(customerAppEnvironmentProvider);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: configuration.environment.displayNameFor('Turf Booking'),
+      title: environment.displayNameFor('Turf Booking'),
       routerConfig: _router.router,
     );
   }

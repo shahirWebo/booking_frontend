@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:turf_booking_core/turf_booking_core.dart';
 import 'package:turf_booking_customer/app/app.dart';
 import 'package:turf_booking_customer/app/routing/customer_app_router.dart';
+import 'package:turf_booking_customer/app/state/app_environment.dart';
 
 void main() {
   testWidgets('renders the customer application shell', (tester) async {
-    await tester.pumpWidget(
-      CustomerApp(
-        configuration: ApiConfiguration.fromBaseUrl(
-          environment: AppEnvironment.production,
-          baseUrl: 'https://api.example.invalid/api/v1',
-        ),
-      ),
+    final configuration = ApiConfiguration.fromBaseUrl(
+      environment: AppEnvironment.production,
+      baseUrl: 'https://api.example.invalid/api/v1',
     );
+    await tester.pumpWidget(_customerApp(configuration));
 
     expect(find.text('Turf Booking'), findsOneWidget);
     expect(find.text('Customer app foundation'), findsOneWidget);
   });
 
   testWidgets('renders the staging display name', (tester) async {
-    await tester.pumpWidget(
-      CustomerApp(
-        configuration: ApiConfiguration.fromBaseUrl(
-          environment: AppEnvironment.staging,
-          baseUrl: 'https://staging-api.example.invalid/api/v1',
-        ),
-      ),
+    final configuration = ApiConfiguration.fromBaseUrl(
+      environment: AppEnvironment.staging,
+      baseUrl: 'https://staging-api.example.invalid/api/v1',
     );
+    await tester.pumpWidget(_customerApp(configuration));
 
     expect(find.text('Turf Booking Staging'), findsOneWidget);
     expect(find.text('Staging'), findsOneWidget);
@@ -48,4 +44,15 @@ void main() {
       findsOneWidget,
     );
   });
+}
+
+Widget _customerApp(ApiConfiguration configuration) {
+  return ProviderScope(
+    overrides: [
+      customerAppEnvironmentProvider.overrideWithValue(
+        configuration.environment,
+      ),
+    ],
+    child: CustomerApp(configuration: configuration),
+  );
 }

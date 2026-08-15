@@ -98,3 +98,10 @@ Each app has an independent `GoRouter` table in `lib/app/routing/`; shared
 packages never own product routes. See
 [`../docs/development/flutter-routing.md`](../docs/development/flutter-routing.md)
 for route ownership, deep-link, and authorization boundaries.
+
+## State management
+
+Each application bootstraps its own Riverpod `ProviderScope` and owns provider
+definitions locally. See
+[`../docs/development/flutter-state-management.md`](../docs/development/flutter-state-management.md)
+for feature ownership and test-override rules.
